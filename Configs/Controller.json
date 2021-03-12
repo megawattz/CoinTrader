@@ -1,0 +1,23 @@
+{
+    "Plugins": {
+	"Exchange": {
+	    "Binance": {
+		"plugin":"Binance"
+	    },
+	    "Binance2": {
+		"plugin":"Binance"
+	    },
+	    "Coinbase": {
+		"plugin":"Coinbase"
+	    },
+	    "Coinbase2": {
+		"plugin":"Coinbase"
+	    }
+	},
+	"UserInterface": {
+	    "TextUserInterface": {
+		"plugin":"TextUserInterface"
+	    }
+	}
+    }
+}
