@@ -60,7 +60,10 @@ class Binance(Exchange):
         return self.Client.get_system_status()
                 
     def GetPortfolio(self, args):
-        minimim_balance = float(args['minimum'] or 0.0001)
+        minimum = 0
+        if not 'minimum' in args:
+            minimum = Config.Get("portfolio.minimum", 0.0001) # Gets a config value, but also requires a default in case config has not been set
+        minimim_balance = float(miniumm)
         data = self.Client.get_account()
         balances = data['balances']
         for item in balances:
