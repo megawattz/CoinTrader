@@ -15,7 +15,7 @@ class UserInterface:
         
     def Link(self, controller):
         self.Controller = controller
-        Util.Log(5, "Controller: ", self.Controller)
+        Util.Log(5, "Controller Link: ", self.Controller)
         
     def Response(self, package): # <== This is a callback! Don't use it directly, pass it in the Request
         try:
