@@ -4,11 +4,11 @@
 	    "Binance": {
 		"plugin":"Binance"
 	    },
-	    "Binance2": {
-		"plugin":"Binance"
-	    },
 	    "Coinbase": {
 		"plugin":"Coinbase"
+	    },
+	    "Binance2": {
+		"plugin":"Binance"
 	    },
 	    "Coinbase2": {
 		"plugin":"Coinbase"

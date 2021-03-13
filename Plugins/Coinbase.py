@@ -12,10 +12,10 @@ class Coinbase(Exchange):
     #def Update(self):
         #self.FeedManager = cbporo.WebsocketCient(url="wss://ws-feed.pro.coinbase.com")
 
-    def Start(self, controller = None):
-        self.Client = cbpro.AuthenticatedClient(self.Credentials['key'],
-                                                self.Credentials['secret'],
-                                                self.Credentials['password']
+    def Start(self):
+        self.Client = cbpro.AuthenticatedClient(self.Credentials.Get('key'),
+                                                self.Credentials.Get('secret'),
+                                                self.Credentials.Get('password')
                                                 )
     def GetPortfolio(self, args):
         balances = self.Client.get_accounts()

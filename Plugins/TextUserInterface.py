@@ -20,8 +20,8 @@ class TextUserInterface(cmd2.Cmd, UserInterface):
     # the function where commands should be sent "controllerEntryPoint"
     # Commands are a command name, followed by space delimited parameters
 
-    def Start(self, mod):
-        super().Start(mod)
+    def Start(self):
+        super().Start()
         Util.Log(5, "Starting UIText")
         self.cmdloop()
 
@@ -48,7 +48,7 @@ class TextUserInterface(cmd2.Cmd, UserInterface):
         
     def do_assets(self, args):
         elements = re.split('\s+', args)
-        command = Util.ListToDict(elements, ["target", "minimimum"], {"command":"GetPortfolio", "target":'.', "minimum": 0.0001})
+        command = Util.ListToDict(elements, ["target", "minimum"], {"command":"GetPortfolio", "target":'.', "minimum": 0.0001})
         self.Request(command)
         
     def do_quote(self, args):

@@ -7,6 +7,7 @@ import json
 from ConfigBase import ConfigBase
 
 class Config(ConfigBase):
+
     def __init__(self, name = None):
         super().__init__()
         self.Root = self.Data[name];

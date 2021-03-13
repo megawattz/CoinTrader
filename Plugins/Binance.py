@@ -37,8 +37,8 @@ class Binance(Exchange):
             ticker = commodity['s']
             self.Market.SetCommodity(ticker, commodity)
 
-    def Start(self, controller = None):
-        self.Client = BinanceClient(self.Credentials['key'], self.Credentials['secret'])
+    def Start(self):
+        self.Client = BinanceClient(self.Credentials.Get('key'), self.Credentials.Get('secret'))
         self.Feeds(True)
         
     def Feeds(self, on = True):
@@ -63,7 +63,7 @@ class Binance(Exchange):
         minimum = 0
         if not 'minimum' in args:
             minimum = Config.Get("portfolio.minimum", 0.0001) # Gets a config value, but also requires a default in case config has not been set
-        minimim_balance = float(miniumm)
+        minimum_balance = float(minimum)
         data = self.Client.get_account()
         balances = data['balances']
         for item in balances:
