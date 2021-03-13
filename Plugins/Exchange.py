@@ -4,14 +4,13 @@ import os
 
 from Portfolio import Portfolio
 from Market import Market
-from TraderConfig import Config
+from Config import Config
 from Credentials import Credentials
 
 # Exchange Base Class
 class Exchange:
     def __init__(self, name, fromMap):
         self.Name(name)
-        self.Config = Config.Branch(self.Name(), {})
         self.Credentials = Credentials.Get(self.Name())
         self.Cookies = {}
         toMap = {}
@@ -24,9 +23,6 @@ class Exchange:
         # this may involve starting threads etc so its a separate step than init
         # this not always needed, especially if there is no passive feed coming from the exchange
         pass
-        
-    def GetConfig(self, key, default_value = None):
-        return self.Config.Get(key, default_value)
         
     # the name of this exchange (used for sending commands and labelling output)
     def Name(self, name=None):

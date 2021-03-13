@@ -9,6 +9,7 @@ import os
 import re
 import sys
 import traceback
+import json
 import Util
 import inspect
 
@@ -62,7 +63,7 @@ import inspect
 
 from Config import Config
 
-Config = Config.Get("Controller")
+Config = Config("Controller")
 
 Plugins = Config.Get('Plugins')
 
@@ -101,9 +102,11 @@ def Load(args):
 
 def LoadPlugins(directory="Plugins/"):
     #fileNames = [fileName for fileName in os.listdir(directory) if re.search('.py$', fileName)]
+    #Util.Log(5, "Plugins Config:\n", json.dumps(Plugins, indent=2))
     for plugType in Plugins:
         for name in Plugins[plugType]:
-            filename = Plugins[name][plugin]
+            Util.Log(5, "Loading Plugin[%s][%s]:" % (plugType, name))
+            filename = Plugins[plugType][name]['plugin']
             Load({"filename":filename, "name":name})
                 
 # for linkages done with python code                
