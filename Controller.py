@@ -112,7 +112,7 @@ def LoadPlugins(directory="Plugins/"):
                 
 # for linkages done with python code                
 def DirectCall(request):
-    Util.log(5, "DirectCall:", request)
+    Util.Log(5, "DirectCall:", DirectCall, request)
     return Command(request)
 
 # for linking to controller over networks
