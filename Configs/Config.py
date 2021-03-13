@@ -4,10 +4,13 @@ import re
 import sys
 import Util
 import json
+from ConfigBase import ConfigBase
 
-class Config():
+class Config(ConfigBase):
     def __init__(self, name = None):
+        super().__init__()
         self.Root = self.Data[name];
+        #Util.Log(5, "Config:%s\n" % name, json.dumps(self.Root, indent=2))
         
     def Get(self, key, default = None):
         levels = re.split("[.]+", key)

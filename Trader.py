@@ -4,11 +4,11 @@
 
 import sys
 
-sys.path.append("./")
 sys.path.append("Utils/")
 sys.path.append("Plugins/")
 sys.path.append("Configs/")
 sys.path.append("Credentials/")
+#sys.path.append("./")
 
 import Controller
 
