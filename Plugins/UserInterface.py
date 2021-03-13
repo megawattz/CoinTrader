@@ -14,19 +14,21 @@ class UserInterface:
         pass
         
     def Link(self, controller):
+        # The controller loaded this module, so this module needs to be
+        # informed how to call the controller
         self.Controller = controller
-        Util.Log(5, "Controller Link: ", self.Controller)
+        #Util.Log(5, "Controller Link: ", self.Controller)
         
     def Response(self, package): # <== This is a callback! Don't use it directly, pass it in the Request
         try:
             print(Util.FormatContent(package))
         except Exception:
             data = sys.exc_info()
-            Util.Log(1, traceback.print_tb(data[2]))
+            #Util.Log(1, traceback.print_tb(data[2]))
 
     def Request(self, command):
         try:
-            Util.Log(5, "Controller:", self.Controller, " Command:", command)
+            #Util.Log(5, "Controller:", self.Controller, " Command:", command)
             self.Controller(command)
         except Exception:
             data = sys.exc_info()

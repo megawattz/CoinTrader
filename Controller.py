@@ -112,7 +112,7 @@ def LoadPlugins(directory="Plugins/"):
                 
 # for linkages done with python code                
 def DirectCall(request):
-    Util.Log(5, "DirectCall:", DirectCall, request)
+    #Util.Log(5, "DirectCall:", DirectCall, request)
     return Command(request)
 
 # for linking to controller over networks
@@ -127,7 +127,7 @@ def Command(request):
     for ptype in Plugins:
         for name in Plugins[ptype]:
             plugin = Plugins[ptype][name]
-            Util.Log(5, "Searching Plugins:%s", plugin)
+            #Util.Log(5, "Searching Plugins:%s", plugin)
             if not re.match(target, plugin.Name()):
                 continue # this is not the plugin you are looking for
             data = {}
@@ -141,7 +141,7 @@ def Command(request):
                 # cant end processing of this loop at the first error, we we stringinze
                 # the exception as a return value, so we can send it to each listening UI
                 info = sys.exc_info()
-                Util.Log(5, "Error:", e)
+                #Util.Log(5, "Error:", e)
                 data.append("Error:", Util.FormatException(e))
             
                 # send the answer to each UserInterface
