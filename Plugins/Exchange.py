@@ -11,7 +11,7 @@ from Credentials import Credentials
 class Exchange:
     def __init__(self, name, fromMap):
         self.Name(name)
-        self.Config = Config.Get(self.Name(), {})
+        self.Config = Config.Branch(self.Name(), {})
         self.Credentials = Credentials.Get(self.Name())
         self.Cookies = {}
         toMap = {}

@@ -60,7 +60,7 @@ import inspect
 # will automagically be searched for that function name and will be satisfied
 # there.
 
-from ControllerConfig import Config
+from Config import Config
 
 Config = Config.Get("Controller")
 
