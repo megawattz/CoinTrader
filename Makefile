@@ -56,7 +56,7 @@ stop:
 
 links:
 	find . -type l -delete
-	find . -mindepth 2 -iname '*.py' -exec ln -s {} . \;
+	find . -mindepth 2 -maxdepth 2 -iname '*.py' -exec ln -s {} . \;
 
 clean:
 	#git clean -f .
