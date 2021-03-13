@@ -97,7 +97,8 @@ def Load(args):
                     continue # not all classes are used as plugins for models, skip those
                 instance = member()  # create an instance of the class in the module
                 Plugins[base.__name__][member.__name__] = instance # store it as a living object into the dictionary of that type of thing (clasname, plugin)
-                instance.Start(Module)  # start the module and send it a reference to this controller (not all modules need to be started)
+                instance.Link(DirectCall) # tell the plugin where the controller is (me, this Module, is the controller)
+                instance.Start() # start the module
                 Util.Log(4, "Loaded module type:%s %s" % (base.__name__, member.__name__))
 
 def LoadPlugins(directory="Plugins/"):
@@ -111,6 +112,7 @@ def LoadPlugins(directory="Plugins/"):
                 
 # for linkages done with python code                
 def DirectCall(request):
+    Util.log(5, "DirectCall:", request)
     return Command(request)
 
 # for linking to controller over networks
@@ -122,15 +124,17 @@ def RESTCall(request):
 def Command(request):
     command = request['command']
     target = request['target']
-    
     for ptype in Plugins:
         for name in Plugins[ptype]:
             plugin = Plugins[ptype][name]
+            Util.Log(5, "Searching Plugins:%s", plugin)
             if not re.match(target, plugin.Name()):
                 continue # this is not the plugin you are looking for
             data = {}
             try:
                 func = getattr(plugin, command)
+                if not func:
+                    raise TraderException("No command called %s", command)
                 data = func(request)
             except Exception as e:
                 # because this command will be going to multiple exchanges, we

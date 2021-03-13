@@ -10,7 +10,10 @@ class Monitor:
         self.Config = Config.Get(self.Name(), {})
         self.Credentials = Credentials.Get(self.Name())
 
-    def Start(self, controller = None):
+    def Link(self, controller = None):
+        pass
+    
+    def Start(self):
         pass
         
     def GetConfig(self, key, default_value = None):

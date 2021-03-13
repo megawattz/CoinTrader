@@ -3,15 +3,19 @@ import json
 import sys
 import re
 import Util
-from TraderConfig import Config
+from Config import Config
 
 class UserInterface:
     def __init__(self, name):
         self.Name = name
-        self.Config = Config.GetConfig(self.Name)
+        self.Config = Config(self.Name)
 
-    def Start(self, mod):
-        self.Controller = mod
+    def Start(self):
+        pass
+        
+    def Link(self, controller):
+        self.Controller = controller
+        Util.Log(5, "Controller: ", self.Controller)
         
     def Response(self, package): # <== This is a callback! Don't use it directly, pass it in the Request
         try:
@@ -22,7 +26,8 @@ class UserInterface:
 
     def Request(self, command):
         try:
-            self.Controller.DirectCall(command)
+            Util.Log(5, "Controller:", self.Controller, " Command:", command)
+            self.Controller(command)
         except Exception:
             data = sys.exc_info()
             Util.Log(1, traceback.print_tb(data[2]))
