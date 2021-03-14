@@ -115,12 +115,16 @@ def LoadPlugins(directory="Plugins/"):
             Load({"module":module, "name":name})
 
 # Calls done to the controller            
-
 def Manage(request):
+    Util.Log(5, "Manage:", request)
     command = request['command']
     if command == 'ListEntities':
-        Util.Log(5, Plugins)
-        return ui.Response(json.dumps(Plugins, indent=1))
+        rval = {}
+        for ptype in Plugins:
+            for entity in Plugins[ptype]:
+                rval[ptype] = entity.Name()
+        Util.Log(5, rval)
+        return ui.Response(json.dumps(rval, indent=1))
     raise TraderException("No command called %s", command)
 
 # Calls done to plugins

@@ -4,11 +4,11 @@ import sys
 import re
 import Util
 from Config import Config
+from Plugin import Plugin
 
-class UserInterface:
+class UserInterface(Plugin):
     def __init__(self, name):
-        self.Name = name
-        self.Config = Config(self.Name)
+        super().__init__(name)
 
     def Start(self):
         pass
