@@ -13,6 +13,7 @@ class Exchange:
         self.Name(name)
         Util.Log(5, "Exchange.__init__(%s)" % name)
         self.Credentials = Credentials(self.Name())
+        self.Config = Config(self.Name())
         self.Cookies = {}
         toMap = {}
         for k,v in fromMap.items():

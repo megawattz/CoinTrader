@@ -8,10 +8,18 @@ from ConfigBase import ConfigBase
 
 class Config(ConfigBase):
 
-    def __init__(self, name = None):
+    def __init__(self, name):
+        self.Name(name)
         super().__init__()
-        self.Root = self.Data[name];
+        if not self.Name() in self.Data(): # no config file? (not always required)
+            self.Data()[self.Name()] = {}
+        self.Root = self.Data()[self.Name()];
         #Util.Log(5, "Config:%s\n" % name, json.dumps(self.Root, indent=2))
+
+    def Name(self, name = None):
+        if name:
+            self.SectionName = name
+        return self.SectionName
         
     def Get(self, key, default = None):
         levels = re.split("[.]+", key)
@@ -21,7 +29,8 @@ class Config(ConfigBase):
                 if default != None:
                     return default
                 else:
-                    raise Util.TraderException("You must provide a config file: %s/%s.json for configuration key: %s" % (self.directory, level, key))
+                    Util.Log(5, "CONFIG:", self.Root)
+                    raise Util.TraderException("You must provide a config file: %s/%s.json for configuration key: %s" % (self.Directory(), self.Name(), key))
             branch = branch[level]
         return branch
 

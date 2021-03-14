@@ -57,9 +57,16 @@ class TextUserInterface(cmd2.Cmd, UserInterface):
         Util.Log(5, elements)
         self.Request(command)
             
-    def do_monitor(self, args):
+    def do_query(self, args):
         elements = re.split('\s+', args)
-        command = Util.ListToDict(elements, ["target"], {"command":"Monitor", "target":'.'}, "tickers")
+        command = Util.ListToDict(elements, ["target","query","options"], {"command":"Query", "target":'.', "query":"", "options":""}, "query")
+        Util.Log(5, elements)
+        self.Request(command)
+
+    # calls directly to the Controller    
+    def do_list(self, args):
+        elements = re.split('\s+', args)
+        command = Util.ListToDict(elements, [], {"command":"ListEntities", "target":'controller'})
         Util.Log(5, elements)
         self.Request(command)
         
