@@ -43,9 +43,15 @@ class UserInterface:
     def do_monitor(self, arg):
         raise Exception("You must define monitor in your derived class")
             
-    def do_exit(self, arg):
+    def do_query(self, arg):
         raise Exception("You must define this in your derived class")
         
+    def do_exit(self, arg):
+        raise Exception("You must define this in your derived class")
+
+    def do_list(self, arg):
+        raise Exception("You must define this in your derived class")
+    
 if __name__ == '__main__':
     import sys
     c = UI()

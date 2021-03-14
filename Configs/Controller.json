@@ -14,6 +14,13 @@
 		"plugin":"Coinbase"
 	    }
 	},
+	"Database": {
+	    "CoinMarketCapSurvey": {
+		"plugin":"HttpDataFeed",
+		"url": "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?limit=3000",
+		"frequency": 360
+	    }
+	},
 	"UserInterface": {
 	    "TextUserInterface": {
 		"plugin":"TextUserInterface"

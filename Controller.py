@@ -65,7 +65,7 @@ from Config import Config
 
 Config = Config("Controller")
 
-Plugins = Config.Get('Plugins')
+Plugins = {}
 
 # All the objects of those types are kept in those dictionaries. Like all
 # UserInterfaces are kept in the Plugins['UserInterface'] dictionary. When a
@@ -88,14 +88,16 @@ Module = sys.modules[__name__] # gets THIS module, the controller (needs to be p
 
 # Loads a module from a filename and instantiates any classes in that module that we want to use as plugins.
 def Load(args):
-    modname = args['filename'].removesuffix(".py")
+    modname = args['module']
+    name = args['name']
     mod = __import__(modname)
-    for name, member in inspect.getmembers(mod): # iterate through all the attributes of the module looking for classes
+    for member_name, member in inspect.getmembers(mod): # iterate through all the attributes of the module looking for classes
         if inspect.isclass(member) and member.__bases__: # if we found a class that has base classes
             for base in member.__bases__:
                 if not base.__name__ in Plugins: # not one of our Plugin classes see Plugins at top of module, don't use it here
                     continue # not all classes are used as plugins for models, skip those
-                instance = member()  # create an instance of the class in the module
+                Util.Log(4, "Loading module type:%s name:%s module:%s class:%s" % (base.__name__, name, modname, member.__name__))
+                instance = member(name)  # create an instance of the class in the module
                 Plugins[base.__name__][member.__name__] = instance # store it as a living object into the dictionary of that type of thing (clasname, plugin)
                 instance.Link(DirectCall) # tell the plugin where the controller is (me, this Module, is the controller)
                 instance.Start() # start the module
@@ -104,12 +106,24 @@ def Load(args):
 def LoadPlugins(directory="Plugins/"):
     #fileNames = [fileName for fileName in os.listdir(directory) if re.search('.py$', fileName)]
     #Util.Log(5, "Plugins Config:\n", json.dumps(Plugins, indent=2))
-    for plugType in Plugins:
-        for name in Plugins[plugType]:
-            Util.Log(5, "Loading Plugin[%s][%s]:" % (plugType, name))
-            filename = Plugins[plugType][name]['plugin']
-            Load({"filename":filename, "name":name})
-                
+    plugins = Config.Get('Plugins')
+    for plugType in plugins:
+        Plugins[plugType] = {}
+        for name in plugins[plugType]:
+            module = plugins[plugType][name]['plugin']
+            Util.Log(5, "Load %s:%s" % (module, name))
+            Load({"module":module, "name":name})
+
+# Calls done to the controller            
+
+def Manage(request):
+    command = request['command']
+    if command == 'ListEntities':
+        Util.Log(5, Plugins)
+        return ui.Response(json.dumps(Plugins, indent=1))
+    raise TraderException("No command called %s", command)
+
+# Calls done to plugins
 # for linkages done with python code                
 def DirectCall(request):
     #Util.Log(5, "DirectCall:", DirectCall, request)
@@ -122,8 +136,12 @@ def RESTCall(request):
     pass
 
 def Command(request):
-    command = request['command']
     target = request['target']
+    
+    if (target == 'controller'):
+        return Manage(request)
+    
+    command = request['command']
     for ptype in Plugins:
         for name in Plugins[ptype]:
             plugin = Plugins[ptype][name]

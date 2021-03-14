@@ -5,10 +5,8 @@ import Utils
 
 class API(object):
     # Generic Method to call APIs
-    def APIrequest(self, url, cookies={}, allow_redirects=True, **kwargs):
-        cookies = cookies or self.Cookies
+    def Request(self, url, cookies={}, allow_redirects=True, **kwargs):
         response = requests.get(url, cookies=cookies, **kwargs)
-        self.Cookies = response.getCookies();
         return response
 
 if __name__ == "__main__":
