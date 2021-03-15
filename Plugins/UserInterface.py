@@ -9,6 +9,7 @@ from Plugin import Plugin
 class UserInterface(Plugin):
     def __init__(self, name):
         super().__init__(name)
+        Util.Log(5, "UserInterface:", name)
 
     def Start(self):
         pass
@@ -19,7 +20,7 @@ class UserInterface(Plugin):
         self.Controller = controller
         #Util.Log(5, "Controller Link: ", self.Controller)
         
-    def Response(self, package): # <== This is a callback! Don't use it directly, pass it in the Request
+    def Response(self, package): # <== This is a callback! Don't use it directly, the Controller will send responses here
         try:
             print(Util.FormatContent(package))
         except Exception:

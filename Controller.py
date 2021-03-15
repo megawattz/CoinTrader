@@ -89,19 +89,20 @@ Module = sys.modules[__name__] # gets THIS module, the controller (needs to be p
 # Loads a module from a filename and instantiates any classes in that module that we want to use as plugins.
 def Load(args):
     modname = args['module']
-    name = args['name']
+    instanceName = args['name']
     mod = __import__(modname)
     for member_name, member in inspect.getmembers(mod): # iterate through all the attributes of the module looking for classes
         if inspect.isclass(member) and member.__bases__: # if we found a class that has base classes
             for base in member.__bases__:
                 if not base.__name__ in Plugins: # not one of our Plugin classes see Plugins at top of module, don't use it here
                     continue # not all classes are used as plugins for models, skip those
-                Util.Log(4, "Loading module type:%s name:%s module:%s class:%s" % (base.__name__, name, modname, member.__name__))
-                instance = member(name)  # create an instance of the class in the module
-                Plugins[base.__name__][member.__name__] = instance # store it as a living object into the dictionary of that type of thing (clasname, plugin)
+                Util.Log(4, "Loading module type:%s name:%s module:%s class:%s" % (base.__name__, instanceName, modname, member.__name__))
+                instance = member(instanceName)  # create an instance of the class in the module
+                #Plugins[base.__name__][member.__name__] = instance # store it as a living object into the dictionary of that type of thing (clasname, plugin)
+                Plugins[base.__name__][instanceName] = instance # store it as a living object into the dictionary of that type of thing (clasname, plugin)
                 instance.Link(DirectCall) # tell the plugin where the controller is (me, this Module, is the controller)
                 instance.Start() # start the module
-                Util.Log(4, "Loaded module type:%s %s" % (base.__name__, member.__name__))
+                Util.Log(4, "Loaded module:%s %s" % (instanceName, instance))
 
 def LoadPlugins(directory="Plugins/"):
     #fileNames = [fileName for fileName in os.listdir(directory) if re.search('.py$', fileName)]
@@ -111,23 +112,26 @@ def LoadPlugins(directory="Plugins/"):
         Plugins[plugType] = {}
         for name in plugins[plugType]:
             module = plugins[plugType][name]['plugin']
-            Util.Log(5, "Load %s:%s" % (module, name))
+            #Util.Log(5, "Request Load %s:%s" % (module, name))
             Load({"module":module, "name":name})
 
 # Calls done to the controller            
 def Manage(request):
-    Util.Log(5, "Manage:", request)
     command = request['command']
+    response = ({"source": command, "response":"No command called %s" % command})
     if command == 'ListEntities':
         rval = {}
         for ptype in Plugins:
+            rval[ptype] = {}
             for entity in Plugins[ptype]:
-                rval[ptype] = entity.Name()
-        Util.Log(5, rval)
-        return ui.Response(json.dumps(rval, indent=1))
-    raise TraderException("No command called %s", command)
+                rval[ptype][entity] = Plugins[ptype][entity]
+        response = {"source":"list", "response": rval}
+
+    for name, ui in Plugins['UserInterface'].items():
+        ui.Response({"source": command, "response": response})
 
 # Calls done to plugins
+
 # for linkages done with python code                
 def DirectCall(request):
     #Util.Log(5, "DirectCall:", DirectCall, request)
@@ -149,7 +153,6 @@ def Command(request):
     for ptype in Plugins:
         for name in Plugins[ptype]:
             plugin = Plugins[ptype][name]
-            #Util.Log(5, "Searching Plugins:%s", plugin)
             if not re.match(target, plugin.Name()):
                 continue # this is not the plugin you are looking for
             data = {}
@@ -167,9 +170,8 @@ def Command(request):
                 data.append("Error:", Util.FormatException(e))
             
                 # send the answer to each UserInterface
-            UserInterfaces = Plugins['UserInterface']
-            for name in UserInterfaces:
-                ui = UserInterfaces[name]
+            for name, ui in Plugins['UserInterface'].items():
+                #ui = UserInterfaces[name]
                 try:
                     ui.Response({"source": name, "response": data})
                 except Exception as e:

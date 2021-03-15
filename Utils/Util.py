@@ -1,9 +1,11 @@
 # Generic Utility Functions
 
+import os
 import re
 import json
 import pprintpp
 import inspect
+import traceback
 
 # Take a list of values, a list of keys (name) and maps the values to the keys
 # in the same order into a dictionary. Current is an already existing
@@ -44,8 +46,15 @@ def ReadJSONFile(filename):
         data = json.load(json_file) 
     return data
 
-#singleton, only one per app
+# function that called me (exclude caller)
+def Stack(start = 0, finish = 9999):
+    stack = inspect.stack()
+    rval = []
+    for index in range(start, min(finish, len(stack))):
+        rval.append("%s:%s" % (os.path.basename(stack[index].filename), stack[index].lineno))
+    return rval
 
+#singleton, only one per app
 # Log levels 0 always, 1 error, 2 warnings, 3 normal, 4 extra, 5 debug, 6 all
 LogLevel = 6
 def Log(*args):
@@ -56,7 +65,7 @@ def Log(*args):
         del elements[0]
     if triviality > LogLevel and LogLevel < 6:
         return
-    print(inspect.stack()[1].function, ":", *elements)
+    print(Stack(2, 3), ":", *elements)
 
 def Output(*args):
     print(*args)
@@ -91,9 +100,8 @@ def FormatException(e):
     return FormatContent(e, traceback.format_tb(e[2]))
 
 class TraderException(Exception):
-    
     def __init__(self, description):
         super().__init__(description)
     
-
-    
+if __name__ == "__main__":
+    print(Stack())
