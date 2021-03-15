@@ -12,7 +12,7 @@ from Plugin import Plugin
 class Exchange(Plugin):
     def __init__(self, name, fromMap):
         super().__init__(name)
-        Util.Log(5, "Exchange.__init__(%s)" % name)
+        #Util.Log(5, "Exchange.__init__(%s)" % name)
         self.Credentials = Credentials(self.Name())
         self.Cookies = {}
         toMap = {}

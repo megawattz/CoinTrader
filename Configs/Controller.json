@@ -22,7 +22,7 @@
 	    }
 	},
 	"UserInterface": {
-	    "TextUserInterface": {
+	    "PrimaryUI": {
 		"plugin":"TextUserInterface"
 	    }
 	}

@@ -6,13 +6,11 @@ import re
 import Util
 from UserInterface import UserInterface
 
-class TextUserInterface(cmd2.Cmd, UserInterface):
-    def __init__(self, name = "TextUserInterface"):
-        super().__init__(name)
-        self.CommandLine = cmd2.Cmd()
+class TextUserInterface( UserInterface, cmd2.Cmd):
 
-    def Name(self):
-        return self.Name
+    def __init__(self, name):
+        super().__init__(name)
+        cmd2.Cmd.__init__(self)
 
     # The controller loads all the modules of this app, and this module is one
     # of many possible UIs.  When the controller loads the module, it calls the
@@ -67,7 +65,6 @@ class TextUserInterface(cmd2.Cmd, UserInterface):
     def do_list(self, args):
         elements = re.split('\s+', args)
         command = Util.ListToDict(elements, [], {"command":"ListEntities", "target":'controller'})
-        Util.Log(5, elements)
         self.Request(command)
         
     def do_exit(self, arg):
