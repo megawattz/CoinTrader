@@ -11,4 +11,3 @@ class Plugin:
         if name:
             self.PluginName = name
         return self.PluginName
-    

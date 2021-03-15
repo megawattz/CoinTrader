@@ -10,14 +10,9 @@ class Database(Plugin):
     def __init__(self, name):
         super().__init__(name)
         self.Credentials = Credentials(self.Name())
-        self.Info = {};
 
-    def Data(self, data):
-        if data:
-            self.Info = data
-        return self.Info
-    
     def Link(self, controller = None):
+        self.Controller = controller
         pass
     
     def Start(self):
@@ -25,10 +20,7 @@ class Database(Plugin):
         # this not always needed, especially if there is no passive feed coming from the exchange
         pass
 
-    def Fetch(self):
-        raise TraderException("Your plugin must implement this")
-
-    def Refresh(self):
+    def Refresh(self, target = None):
         raise TraderException("Your plugin must implement this")
     
     def Query(self, query):

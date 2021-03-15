@@ -1,5 +1,12 @@
 {
     "Plugins": {
+	"Database": {
+	    "CoinMarketCapSurvey": {
+		"plugin":"HttpDataFeed",
+		"url": "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?limit=3000",
+		"frequency": 360
+	    }
+	},
 	"Exchange": {
 	    "Binance": {
 		"plugin":"Binance"
@@ -12,13 +19,6 @@
 	    },
 	    "Coinbase2": {
 		"plugin":"Coinbase"
-	    }
-	},
-	"Database": {
-	    "CoinMarketCapSurvey": {
-		"plugin":"HttpDataFeed",
-		"url": "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?limit=3000",
-		"frequency": 360
 	    }
 	},
 	"UserInterface": {

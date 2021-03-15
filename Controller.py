@@ -84,7 +84,7 @@ Plugins = {}
 # executes (price drop of 50%)). ETH/USDT:10000 means "spend 100000 USDT on
 # ETH" when or if the trigger executes.
     
-Module = sys.modules[__name__] # gets THIS module, the controller (needs to be passed to UserInterfaces so they can talk to us)
+ControllerModule = sys.modules[__name__] # gets THIS module, the controller (needs to be passed to UserInterfaces so they can talk to us)
 
 # Loads a module from a filename and instantiates any classes in that module that we want to use as plugins.
 def Load(args):
@@ -98,9 +98,8 @@ def Load(args):
                     continue # not all classes are used as plugins for models, skip those
                 Util.Log(4, "Loading module type:%s name:%s module:%s class:%s" % (base.__name__, instanceName, modname, member.__name__))
                 instance = member(instanceName)  # create an instance of the class in the module
-                #Plugins[base.__name__][member.__name__] = instance # store it as a living object into the dictionary of that type of thing (clasname, plugin)
                 Plugins[base.__name__][instanceName] = instance # store it as a living object into the dictionary of that type of thing (clasname, plugin)
-                instance.Link(DirectCall) # tell the plugin where the controller is (me, this Module, is the controller)
+                instance.Link(ControllerModule) # tell the plugin where the controller is (me, this Module, is the controller)
                 instance.Start() # start the module
                 Util.Log(4, "Loaded module:%s %s" % (instanceName, instance))
 
@@ -133,7 +132,7 @@ def Manage(request):
 # Calls done to plugins
 
 # for linkages done with python code                
-def DirectCall(request):
+def PluginRequest(request):
     #Util.Log(5, "DirectCall:", DirectCall, request)
     return Command(request)
 
@@ -143,41 +142,48 @@ def RESTCall(request):
     # answser = Command(request)
     pass
 
-def Command(request):
+def PluginResponse(source, data):
+    # send the answer to each UserInterface
+    for name, ui in Plugins['UserInterface'].items():
+        #ui = UserInterfaces[name]
+        try:
+            ui.Response({"source": name, "response": data})
+        except Exception as e:
+            # if the ui throws, then we have nowhere to send the
+            # information except to stderr
+            Util.Log(1, "Error:", e)
+
+def Command(request): 
     target = request['target']
-    
     if (target == 'controller'):
         return Manage(request)
-    
+
+    Util.Log(5, "Request:", request)
     command = request['command']
     for ptype in Plugins:
         for name in Plugins[ptype]:
             plugin = Plugins[ptype][name]
             if not re.match(target, plugin.Name()):
                 continue # this is not the plugin you are looking for
-            data = {}
+            data = []
             try:
-                func = getattr(plugin, command)
-                if not func:
-                    raise TraderException("No command called %s", command)
-                data = func(request)
+                func = None
+                try:
+                    func = getattr(plugin, command)
+                except:
+                    continue
+                item = func(request)
+                data.append(item)
             except Exception as e:
                 # because this command will be going to multiple exchanges, we
                 # cant end processing of this loop at the first error, we we stringinze
                 # the exception as a return value, so we can send it to each listening UI
                 info = sys.exc_info()
                 #Util.Log(5, "Error:", e)
-                data.append("Error:", Util.FormatException(e))
-            
-                # send the answer to each UserInterface
-            for name, ui in Plugins['UserInterface'].items():
-                #ui = UserInterfaces[name]
-                try:
-                    ui.Response({"source": name, "response": data})
-                except Exception as e:
-                    # if the ui throws, then we have nowhere to send the
-                    # information except to stderr
-                    Util.Log(1, "Error:", e)
-
+                data.append({"error": info[1], "stack": traceback.print_tb(info[2])})
+                
+            PluginResponse(name, data)
+                
+    
 if __name__ == "main":
     print(len(Exchanges))

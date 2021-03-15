@@ -3,17 +3,29 @@ import sys
 import traceback
 import re
 import Util
+import threading
 from Database import Database
 from API import API
 
 class HttpDataFeed(Database, API):
+    Data = {}  # Datafeeds share one huge JSON data tree (to make querying and joining doable)
     def __init__(self, name):
         Database.__init__(self, name)
         
     def Start(self):
-        self.Data(self.Request(self.Config.Get("url")))
         pass
 
+    def RefreshThread(self):
+        self.Controller.PluginResponse(self.Name(), "Refresh Started")
+        temp = self.Data(self.Request(self.Config.Get("url")))
+        self.Data[self.Name()] = temp
+        self.Controller.PluginResponse(self.Name(), "Refresh Finished")
+    
+    def Refresh(self, target = None):
+        Util.Log(5, "Refresh:", target)
+        self.Thread = threading.Thread(target=self.RefreshThread)
+        self.Thread.start()
+    
     # does the JSON query match the JSON data?
     def Hit(self, data, query):
         for key in query:
