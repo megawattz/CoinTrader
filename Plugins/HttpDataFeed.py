@@ -35,8 +35,8 @@ class HttpDataFeed(Database, API):
         self.Data(json.loads(temp.text))
         self.Controller.PluginResponse(self.Name(), "Refresh Finished")
     
-    def Refresh(self, target = None):
-        Util.Log(5, "Refresh:", target)
+    def Refresh(self, args = None):
+        Util.Log(5, "Refresh:", args)
         self.Thread = threading.Thread(target=self.RefreshThread)
         self.Thread.start()
     
@@ -56,8 +56,9 @@ class HttpDataFeed(Database, API):
             else:
                 collector[label] = data
     
-    def Query(self, query):
-        elements = re.split("[.]", query)
+    def Query(self, args):
+        Util.Log(5, "Query:", args)
+        elements = re.split("[.]", args['query'])
         collector = {}
         self.Hit("", self.Info, elements, collector)
         return collector

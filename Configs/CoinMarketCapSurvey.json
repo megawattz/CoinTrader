@@ -1,6 +1,21 @@
 {
-    "url": "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?limit=3000",
+    "url": "https://pro-api.coinmarketcap.com/v1/global-metrics/quotes/latest",
     "frequency": 360,
-    "rootname": "cmc",
+    "rootname": "globalmetrics",
     "headers": {"X-CMC_PRO_API_KEY":"73e3ac96-73a4-45de-8d2a-88795c36898f"}
 }
+
+{
+    "url": "https://pro-api.coinmarketcap.com/v1/blockain/statistics/latest",
+    "frequency": 360,
+    "rootname": "blockchain",
+    "headers": {"X-CMC_PRO_API_KEY":"73e3ac96-73a4-45de-8d2a-88795c36898f"}
+}
+
+{
+    "url": "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?limit=3000",
+    "frequency": 360,
+    "rootname": "overview",
+    "headers": {"X-CMC_PRO_API_KEY":"73e3ac96-73a4-45de-8d2a-88795c36898f"}
+}
+
