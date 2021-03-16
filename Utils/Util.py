@@ -85,6 +85,7 @@ def SetFormat(args):
 # All textual output for the user should be piped through this.  The user can
 # set the format he wants to see so all output should be done through this
 def FormatContent(toshow):
+    return pprintpp.pformat(toshow, 2)
     global Format, Formats
     method = Format['format'];
     param = Format['arg']

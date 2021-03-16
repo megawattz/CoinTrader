@@ -7,7 +7,6 @@
 	},
 	"Exchange": {
 	    "Binance": {
-		"status":"disabled",
 		"plugin":"Binance"
 	    },
 	    "Coinbase": {

@@ -57,8 +57,8 @@ class TextUserInterface( UserInterface, cmd2.Cmd):
         self.Request(command)
             
     def do_query(self, args):
-        elements = re.split('\s+', args)
-        command = Util.ListToDict(elements, ["target","command"], {"command":"Query", "target":'.', "query":"", "options":""}, "query")
+        elements = re.split('\s+', args, 1)
+        command = Util.ListToDict(elements, ["target", "query"], {"command":"Query", "target":'', "query":''})
         Util.Log(5, elements)
         self.Request(command)
         

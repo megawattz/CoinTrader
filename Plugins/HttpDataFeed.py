@@ -16,12 +16,15 @@ class HttpDataFeed(Database, API):
     def Start(self):
         pass
 
-    def Data(self, json_branch = None):
-        if json_branch:
-            self.Info[self.Name()] = json_branch
-        if not self.Name() in self.Info:
-            self.Info[self.Name()] = {}
-        return self.Info[self.Name()]
+    def Data(self, data_to_insert = None):
+        # all the queries from remote sources are kept in one huge tree, but each plugin
+        # stores it in that tree under the top level branch of whatever "dataroot" is configured for
+        dataroot = self.Config.Get("dataroot", self.Name())
+        if data_to_insert:
+            self.Info[dataroot] = data_to_insert
+        if not dataroot in self.Info:
+            self.Info[dataroot] = {}
+        return self.Info[dataroot]
     
     def RefreshThread(self):
         self.Controller.PluginResponse(self.Name(), "Refresh Started")
@@ -29,7 +32,7 @@ class HttpDataFeed(Database, API):
         Util.Log(5, "Request:", json.dumps(config))
         temp = self.Request(url=config['url'], headers=config['headers'])
         Util.Log(5, "HttpDataQuery Refresh:", temp)
-        self.Data(temp.text)
+        self.Data(json.loads(temp.text))
         self.Controller.PluginResponse(self.Name(), "Refresh Finished")
     
     def Refresh(self, target = None):
@@ -38,23 +41,26 @@ class HttpDataFeed(Database, API):
         self.Thread.start()
     
     # does the JSON query match the JSON data?
-    def Hit(self, data, query):
-        for key in query:
-            if not data[key]: # data doesn't even have that key? no hit
-                return None
-            selector = query[key]
-            if not re.match(selector, data[key]):
-                return None
-        return data # A hit, return it.
+    def Hit(self, label, data, query, collector):
+        search = query.pop(0)
+        if not search:
+            return
+        if type(data) == 'array':
+            for index in range(0, len(data)):
+                self.Hit(index, data[index], query, collector)
+        else:
+            if type(data) == 'dict':
+                for key, value in data.items():
+                    if re.match(search, key):
+                        self.Hit(key, value, query, collector)
+            else:
+                collector[label] = data
     
-    def Query(self, query, options = {}):
-        return self.Data()
-        results = []
-        for item in self.Data():
-            data = self.Data()[item]
-            if self.Hit(data, query):
-                results.append[data]
-        return results
+    def Query(self, query):
+        elements = re.split("[.]", query)
+        collector = {}
+        self.Hit("", self.Info, elements, collector)
+        return collector
 
 if __name__ == "__main__":
     database = Database()
