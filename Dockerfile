@@ -22,7 +22,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
 
 RUN pip3 install \
     etherscan \
-    objectpath 
+    pythonql
 
 ENV PATH=${PATH}:/app/bin
 
