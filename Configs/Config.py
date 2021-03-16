@@ -21,7 +21,9 @@ class Config(ConfigBase):
             self.SectionName = name
         return self.SectionName
         
-    def Get(self, key, default = None):
+    def Get(self, key = None, default = None):
+        if key == None:
+            return self.Root
         levels = re.split("[.]+", key)
         branch = self.Root
         for level in levels:

@@ -91,11 +91,14 @@ def Load(args):
     modname = args['module']
     instanceName = args['name']
     mod = __import__(modname)
-    for member_name, member in inspect.getmembers(mod): # iterate through all the attributes of the module looking for classes
-        if inspect.isclass(member) and member.__bases__: # if we found a class that has base classes
+    # iterate through all the attributes of the module looking for classes
+    for member_name, member in inspect.getmembers(mod):
+        # is it a class? does it have base classes?
+        if inspect.isclass(member) and member.__bases__:
             for base in member.__bases__:
-                if not base.__name__ in Plugins: # not one of our Plugin classes see Plugins at top of module, don't use it here
-                    continue # not all classes are used as plugins for models, skip those
+                # if it's not a base class we are interested in, skip it, it's a general purpose class not a plugin
+                if not base.__name__ in Plugins:
+                    continue
                 Util.Log(4, "Loading module type:%s name:%s module:%s class:%s" % (base.__name__, instanceName, modname, member.__name__))
                 instance = member(instanceName)  # create an instance of the class in the module
                 Plugins[base.__name__][instanceName] = instance # store it as a living object into the dictionary of that type of thing (clasname, plugin)
@@ -110,6 +113,8 @@ def LoadPlugins(directory="Plugins/"):
     for plugType in plugins:
         Plugins[plugType] = {}
         for name in plugins[plugType]:
+            if Config.Get("Plugins.%s.%s.status" % (plugType, name), "enabled") == "disabled":
+                continue # cofigured as disabled? skip it
             module = plugins[plugType][name]['plugin']
             #Util.Log(5, "Request Load %s:%s" % (module, name))
             Load({"module":module, "name":name})
@@ -124,7 +129,7 @@ def Manage(request):
             rval[ptype] = {}
             for entity in Plugins[ptype]:
                 rval[ptype][entity] = Plugins[ptype][entity]
-        response = {"source":"list", "response": rval}
+        response = rval
 
     for name, ui in Plugins['UserInterface'].items():
         ui.Response({"source": command, "response": response})

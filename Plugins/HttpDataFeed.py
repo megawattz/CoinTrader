@@ -8,17 +8,28 @@ from Database import Database
 from API import API
 
 class HttpDataFeed(Database, API):
-    Data = {}  # Datafeeds share one huge JSON data tree (to make querying and joining doable)
+    Info = {} # all data feeds will share a large shared JSON tree so joins can be done easily
+    
     def __init__(self, name):
         Database.__init__(self, name)
         
     def Start(self):
         pass
 
+    def Data(self, json_branch = None):
+        if json_branch:
+            self.Info[self.Name()] = json_branch
+        if not self.Name() in self.Info:
+            self.Info[self.Name()] = {}
+        return self.Info[self.Name()]
+    
     def RefreshThread(self):
         self.Controller.PluginResponse(self.Name(), "Refresh Started")
-        temp = self.Data(self.Request(self.Config.Get("url")))
-        self.Data[self.Name()] = temp
+        config = self.Config.Get()
+        Util.Log(5, "Request:", json.dumps(config))
+        temp = self.Request(url=config['url'], headers=config['headers'])
+        Util.Log(5, "HttpDataQuery Refresh:", temp)
+        self.Data(temp.text)
         self.Controller.PluginResponse(self.Name(), "Refresh Finished")
     
     def Refresh(self, target = None):
@@ -37,6 +48,7 @@ class HttpDataFeed(Database, API):
         return data # A hit, return it.
     
     def Query(self, query, options = {}):
+        return self.Data()
         results = []
         for item in self.Data():
             data = self.Data()[item]

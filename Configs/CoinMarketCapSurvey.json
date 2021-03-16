@@ -1,4 +1,5 @@
 {
     "url": "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?limit=3000",
-    "frequency": 360
+    "frequency": 360,
+    "headers": {"X-CMC_PRO_API_KEY":"73e3ac96-73a4-45de-8d2a-88795c36898f"}
 }

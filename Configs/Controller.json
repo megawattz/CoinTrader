@@ -2,22 +2,23 @@
     "Plugins": {
 	"Database": {
 	    "CoinMarketCapSurvey": {
-		"plugin":"HttpDataFeed",
-		"url": "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?limit=3000",
-		"frequency": 360
+		"plugin":"HttpDataFeed"
 	    }
 	},
 	"Exchange": {
 	    "Binance": {
+		"status":"disabled",
 		"plugin":"Binance"
 	    },
 	    "Coinbase": {
 		"plugin":"Coinbase"
 	    },
 	    "Binance2": {
+		"status":"disabled",
 		"plugin":"Binance"
 	    },
 	    "Coinbase2": {
+		"status":"disabled",
 		"plugin":"Coinbase"
 	    }
 	},

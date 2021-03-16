@@ -4,6 +4,7 @@ import json
 import sys
 import re
 import Util
+
 from UserInterface import UserInterface
 
 class TextUserInterface( UserInterface, cmd2.Cmd):

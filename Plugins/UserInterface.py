@@ -22,7 +22,7 @@ class UserInterface(Plugin):
 
     def Response(self, response_json): # <== This is a callback! Don't use it directly, the Controller will send responses here
         try:
-            print(Util.FormatContent(response_json))
+            print(Util.FormatContent(response_json['response']))
         except Exception:
             data = sys.exc_info()
             Util.Log(2, traceback.print_tb(data[2]))
