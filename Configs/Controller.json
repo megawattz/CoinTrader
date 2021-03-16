@@ -1,7 +1,13 @@
 {
     "Plugins": {
 	"Database": {
-	    "CoinMarketCapSurvey": {
+	    "Overview": {
+		"plugin":"HttpDataFeed"
+	    },
+	    "GlobalMetrics": {
+		"plugin":"HttpDataFeed"
+	    },
+	    "BlockChain": {
 		"plugin":"HttpDataFeed"
 	    }
 	},
