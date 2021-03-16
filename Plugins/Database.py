@@ -1,6 +1,6 @@
 import json
 import os
-import Util
+import Utils
 from Config import Config
 from Credentials import Credentials
 from Plugin import Plugin
