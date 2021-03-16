@@ -21,7 +21,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
     python3-pprintpp
 
 RUN pip3 install \
-    etherscan
+    etherscan \
+    objectpath 
 
 ENV PATH=${PATH}:/app/bin
 
