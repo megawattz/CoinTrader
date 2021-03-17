@@ -49,14 +49,16 @@ class HttpDataFeed(Database, API):
     
     # does the JSON query match the JSON data?
     def Hit(self, label, data, query, collector):
-        search = query.pop(0)
-        if not search:
+        if not query:
+            collector[label] = data
             return
-        if type(data) == 'array':
+        search = query.pop(0)
+        #Util.Log(5, "Hit label:%s search:%s %s:%s" % (label, search, label, data))
+        if isinstance(data, list):
             for index in range(0, len(data)):
                 self.Hit(index, data[index], query, collector)
         else:
-            if type(data) == 'dict':
+            if isinstance(data, dict):
                 for key, value in data.items():
                     if re.match(search, key):
                         self.Hit(key, value, query, collector)
@@ -65,9 +67,12 @@ class HttpDataFeed(Database, API):
     
     def Query(self, args):
         Util.Log(5, "Query:", args)
-        elements = re.split("[.]", args['query'])
+        elements = re.split(':', args['query'])
         collector = {}
-        self.Hit("", self.Info, elements, collector)
+        if args['target'] == '*':
+            self.Hit(self.Name(), self.Info, elements, collector)
+        else:
+            self.Hit(self.Name(), self.Data(), elements, collector)
         return collector
 
 if __name__ == "__main__":
