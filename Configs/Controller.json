@@ -2,9 +2,11 @@
     "Plugins": {
 	"Database": {
 	    "Overview": {
+		"status":"disabled",
 		"plugin":"HttpDataFeed"
 	    },
 	    "GlobalMetrics": {
+		"status":"disabled",
 		"plugin":"HttpDataFeed"
 	    },
 	    "BlockChain": {
