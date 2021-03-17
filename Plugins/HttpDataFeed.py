@@ -12,9 +12,14 @@ class HttpDataFeed(Database, API):
     
     def __init__(self, name):
         Database.__init__(self, name)
+        self.CacheFile = "Cache/"+self.Name()+".json"
         
     def Start(self):
-        pass
+        try:
+            temp = Util.ReadFile(self.CacheFile)
+            self.Data(json.loads(temp))
+        except:
+            Util.Log(5, "No cache file:", self.CacheFile)
 
     def Data(self, data_to_insert = None):
         # all the queries from remote sources are kept in one huge tree, but each plugin
@@ -31,8 +36,10 @@ class HttpDataFeed(Database, API):
         config = self.Config.Get()
         Util.Log(5, "Request:", json.dumps(config))
         temp = self.Request(url=config['url'], headers=config['headers'])
-        Util.Log(5, "HttpDataQuery Refresh:", temp)
-        self.Data(json.loads(temp.text))
+        Util.Log(5, "HttpDataQuery Refresh:", temp.text)
+        data = json.loads(temp.text)
+        Util.WriteFile(self.CacheFile, json.dumps(data, indent=2), backup=True)
+        self.Data(data)
         self.Controller.PluginResponse(self.Name(), "Refresh Finished")
     
     def Refresh(self, args = None):

@@ -6,6 +6,7 @@ import json
 import pprintpp
 import inspect
 import traceback
+import shutil
 
 # Take a list of values, a list of keys (name) and maps the values to the keys
 # in the same order into a dictionary. Current is an already existing
@@ -103,6 +104,20 @@ def FormatException(e):
 class TraderException(Exception):
     def __init__(self, description):
         super().__init__(description)
-    
+        
+def WriteFile(filename, data, **options):
+    if 'backup' in options:
+        try:
+            shutil.copyfile(filename, filename+".bak")
+        except:
+            pass
+    rval = 0
+    with open(filename, 'w') as write_file:
+        return write_file.write(data)
+        
+def ReadFile(filename): # mode could be 'a' (append) if you wanted
+   with open(filename, 'r') as read_file:
+        return read_file.read()
+
 if __name__ == "__main__":
     print(Stack())
