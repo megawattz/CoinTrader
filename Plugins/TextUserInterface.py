@@ -69,7 +69,13 @@ class TextUserInterface( UserInterface, cmd2.Cmd):
         self.Request(command)
 
     # calls directly to the Controller    
-    def do_list(self, args):
+    def do_dump(self, args):
+        elements = re.split('\s+', args)
+        command = Util.ListToDict(elements, [], {"command":"Dump", "target":'controller'})
+        Util.Log(5, elements)
+        self.Request(command)
+        
+    def do_list(self, args): # list all plugins
         elements = re.split('\s+', args)
         command = Util.ListToDict(elements, [], {"command":"ListEntities", "target":'controller'})
         self.Request(command)

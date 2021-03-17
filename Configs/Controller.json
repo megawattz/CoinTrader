@@ -8,7 +8,6 @@
 		"plugin":"HttpDataFeed"
 	    },
 	    "BlockChain": {
-		"status":"disabled",
 		"plugin":"HttpDataFeed"
 	    }
 	},

@@ -131,6 +131,13 @@ def Manage(request):
                 rval[ptype][entity] = Plugins[ptype][entity]
         response = rval
 
+    if command == 'Dump':  # write all internal databases to Cache directory
+        from ConfigBase import ConfigBase
+        Util.WriteFile("Cache/Config.json", json.dumps(ConfigBase.ConfigData, indent=2))
+        from HttpDataFeed import HttpDataFeed
+        Util.WriteFile("Cache/HttpDataFeed.json", json.dumps(HttpDataFeed.Info, indent=2))
+        response = "Written to Cache/"
+        
     for name, ui in Plugins['UserInterface'].items():
         ui.Response({"source": command, "response": response})
 
