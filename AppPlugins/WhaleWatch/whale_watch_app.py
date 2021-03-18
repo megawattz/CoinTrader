@@ -23,7 +23,6 @@ def flush_logs(error, output):
 error_file = "{}/whale_watch/whale_error.txt".format(cur_path)
 output_file = "{}/whale_watch/whale_output.txt".format(cur_path)
 flush_logs(error_file, output_file)
-print("started.... whale watch, first sightings in 5 minutes...")
 
 
 def job():

@@ -1,7 +1,16 @@
 */__pycache_/*
 *~
+.DS_Store
 .idea/
+*/cmc_master_list.json
+*/cc_master_list.json
+*/whale_output.txt
+*/whale_error.txt
+*/output.txt
+*/error.txt
+*/venv/*
 AppPlugins/WhaleWatch/venv/*
+AppPlugins/WhaleWatch/whale_watch/__pycache__/
 .DS_Store
 *.cred
 junk

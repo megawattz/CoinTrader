@@ -7,7 +7,7 @@ import re
 from twilio.rest import Client
 import os
 import time
-import whale_watch.sym_to_ctr
+import whale_watch.sym_to_ctr as mapping
 
 
 # returns twilio client
@@ -103,7 +103,7 @@ def open_conf(file):
 # add data to json config quickly (via
 def add_sym_to_ctr_to_whale_conf(whale_conf_file):
     data = open_conf(whale_conf_file)
-    dic = whale_watch.sym_to_ctr.get_map()
+    dic = mapping.get_map()
     for key in dic:
         addy = dic[key]["addy"]
         data[addy] = {"eth_whale_thresh": dic[key]['thresh'], "symbol": key, "contract_hash": addy, "recent_wh_buys": [], "all_wh_buys": []}
@@ -136,6 +136,7 @@ def get_bitquery_data(time_interval, limit):
 
 # token_conf = json file that has all tokens we care about
 def process_bitquery(time_interval, limit, token_conf, recv_nums, tw):
+    print("hello world")
     bit_query = get_bitquery_data(time_interval, limit)
     bit_query_json = json.loads(bit_query.text)
     tokens = open_conf(token_conf)
@@ -180,7 +181,10 @@ def process_bitquery(time_interval, limit, token_conf, recv_nums, tw):
                 found_buy = True
     dt = datetime.now()
     dt_st = dt.strftime("%b, %d - %H:%M:%S")
-    print("No whale buys found on {}".format(dt_st)) if not found_buy else print("")
+    if not found_buy:
+        print("No whale buys found on {}".format(dt_st))
+    else:
+        print("___")
     return tokens
 
 
