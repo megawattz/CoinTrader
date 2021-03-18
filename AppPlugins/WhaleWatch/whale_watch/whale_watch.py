@@ -8,6 +8,11 @@ from twilio.rest import Client
 import os
 import time
 import whale_watch.sym_to_ctr as mapping
+import pathlib
+
+
+# get current path
+cur_path = pathlib.Path(__file__).parent.absolute()
 
 
 # returns twilio client
@@ -172,8 +177,13 @@ def process_bitquery(time_interval, limit, token_conf, recv_nums, tw):
                     tokens[alt_hash]["recent_wh_buys"].append(tx_dict)
     for t_hash in tokens:
         if not isinstance(tokens[t_hash], list):
-            process_sms(tokens[t_hash]["recent_wh_buys"], tokens[t_hash]["symbol"],
+            buys = tokens[t_hash]["recent_wh_buys"]
+            process_sms(buys, tokens[t_hash]["symbol"],
                         time_interval, tokens[t_hash]["eth_whale_thresh"], recv_nums, tw)
+
+    out_file = "{}/whale_watch_output.json".format(cur_path)
+    collect_json_output(tokens, out_file)
+
     found_buy = False
     for t_hash in tokens:
         if not isinstance(tokens[t_hash], list):
@@ -186,6 +196,16 @@ def process_bitquery(time_interval, limit, token_conf, recv_nums, tw):
     else:
         print("___")
     return tokens
+
+
+# writes all buys information to whale_watch_output.json
+def collect_json_output(tokens, output_file):
+    conf = "{}/whale_conf.json".format(cur_path)
+    whale_data_to_updt = open_conf(conf)
+    for token in whale_data_to_updt:
+        if not isinstance(whale_data_to_updt[token], list):
+            whale_data_to_updt[token]["all_wh_buys"].extend(tokens[token]["recent_wh_buys"])
+    close_conf(output_file, whale_data_to_updt)
 
 
 def process_sms(buys, sym, time_interval, eth_thresh, recv_nums, tw):
