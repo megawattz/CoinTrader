@@ -24,28 +24,30 @@ error_file = "{}/whale_watch/whale_error.txt".format(cur_path)
 output_file = "{}/whale_watch/whale_output.txt".format(cur_path)
 flush_logs(error_file, output_file)
 print("started.... whale watch, first sightings in 5 minutes...")
+conf = "{}/whale_watch/whale_conf.json".format(cur_path)
+updated_whale_data = ww.process_bitquery(time_segment, limit, conf, alert_phone_nums, tw)
+ww.close_conf(conf, updated_whale_data)
 
-
-def job():
-    # print("whale_watch running on thread %s" % threading.current_thread())
-    conf = "{}/whale_watch/whale_conf.json".format(cur_path)
-    updated_whale_data = ww.process_bitquery(time_segment, limit, conf, alert_phone_nums, tw)
-    ww.close_conf(conf, updated_whale_data)
-
-
-# Function not used, ask Walt if multi threading is needed
-# reference https://schedule.readthedocs.io/en/stable/
-def run_threaded(job_func):
-    job_thread = threading.Thread(target=job_func)
-    job_thread.start()
-
-
-schedule.every(5).minutes.do(job)
-
-
-while True:
-    schedule.run_pending()
-    time.sleep(1)
+# def job():
+#     # print("whale_watch running on thread %s" % threading.current_thread())
+#     conf = "{}/whale_watch/whale_conf.json".format(cur_path)
+#     updated_whale_data = ww.process_bitquery(time_segment, limit, conf, alert_phone_nums, tw)
+#     ww.close_conf(conf, updated_whale_data)
+#
+#
+# # Function not used, ask Walt if multi threading is needed
+# # reference https://schedule.readthedocs.io/en/stable/
+# def run_threaded(job_func):
+#     job_thread = threading.Thread(target=job_func)
+#     job_thread.start()
+#
+#
+# schedule.every(5).minutes.do(job)
+#
+#
+# while True:
+#     schedule.run_pending()
+#     time.sleep(1)
 
 
 # bloxy stuff (not used currently, bitquery has replaced our use of bloxy rest api)

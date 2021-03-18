@@ -22,7 +22,12 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
 
 RUN pip3 install \
     etherscan \
-    pythonql
+    pythonql \
+    youtube_transcript_api \
+    schedule \
+    twilio \
+    python-twitter \
+    pycoingecko
 
 ENV PATH=${PATH}:/app/bin
 
