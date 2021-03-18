@@ -10,6 +10,7 @@ output.txt
 error.txt
 */venv/*
 AppPlugins/WhaleWatch/venv/*
+AppPlugins/WhaleWatch/whale_watch/__pycache__/
 .DS_Store
 *.cred
 junk
