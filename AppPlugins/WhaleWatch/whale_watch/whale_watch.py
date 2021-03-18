@@ -7,7 +7,7 @@ import re
 from twilio.rest import Client
 import os
 import time
-import AppPlugins.WhaleWatch.whale_watch.sym_to_ctr as mapper
+import whale_watch.sym_to_ctr
 
 
 # returns twilio client
@@ -103,7 +103,7 @@ def open_conf(file):
 # add data to json config quickly (via
 def add_sym_to_ctr_to_whale_conf(whale_conf_file):
     data = open_conf(whale_conf_file)
-    dic = mapper.get_map()
+    dic = whale_watch.sym_to_ctr.get_map()
     for key in dic:
         addy = dic[key]["addy"]
         data[addy] = {"eth_whale_thresh": dic[key]['thresh'], "symbol": key, "contract_hash": addy, "recent_wh_buys": [], "all_wh_buys": []}
