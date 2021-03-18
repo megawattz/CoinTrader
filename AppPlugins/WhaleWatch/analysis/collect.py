@@ -12,7 +12,7 @@ import twitter
 import time
 import urllib
 
-#a comment	
+
 class Collect(object):
 
     # defines the api's that we want to pull in

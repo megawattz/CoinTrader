@@ -1,5 +1,5 @@
-from AppPlugins.WhaleWatch.analysis.coin_analysis import Analysis
-from AppPlugins.WhaleWatch.analysis.collect import Collect
+from analysis.coin_analysis import Analysis
+from analysis.collect import Collect
 import time
 import pathlib
 
@@ -75,6 +75,6 @@ print("coins to buy are as follows:")
 print("************************************************************")
 number = len(final_list_rank)
 for coin in final_list_rank:
-    print("WhaleWatch #{}, symbol: {}, buy score: {}, market_cap: {}".format(number, coin['cc_symbol'], coin['buy_level'], coin['market_cap']))
+    print("Coin #{}, symbol: {}, buy score: {}, market_cap: {}".format(number, coin['cc_symbol'], coin['buy_level'], coin['market_cap']))
     number -= 1
     print("###########################")

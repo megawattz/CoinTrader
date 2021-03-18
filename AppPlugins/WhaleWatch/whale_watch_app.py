@@ -1,4 +1,4 @@
-import AppPlugins.WhaleWatch.whale_watch.whale_watch as ww
+import whale_watch.whale_watch as ww
 import schedule
 import threading
 import time

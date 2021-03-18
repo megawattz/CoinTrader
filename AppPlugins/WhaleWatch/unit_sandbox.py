@@ -1,5 +1,5 @@
-from AppPlugins.WhaleWatch.whale_watch.whale_watch import add_sym_to_ctr_to_whale_conf
-from AppPlugins.WhaleWatch.analysis import *
+from whale_watch.whale_watch import add_sym_to_ctr_to_whale_conf
+from analysis import *
 import pathlib
 
 cur_path = pathlib.Path(__file__).parent.absolute()
