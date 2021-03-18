@@ -1,4 +1,7 @@
 */__pycache_/*
 *~
+.idea/
+AppPlugins/WhaleWatch/venv/*
+.DS_Store
 *.cred
 junk
