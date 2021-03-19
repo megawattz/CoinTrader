@@ -1,0 +1,9 @@
+{
+    "url": "https://pro-api.coinmarketcap.com/v1/global-metrics/quotes/latest",
+    "frequency": 360,
+    "rootname": "globalmetrics",
+    "headers": {"X-CMC_PRO_API_KEY":"73e3ac96-73a4-45de-8d2a-88795c36898f"}
+}
+
+
+
