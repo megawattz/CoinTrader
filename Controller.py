@@ -114,6 +114,7 @@ def LoadPlugins(directory="Plugins/"):
         Plugins[plugType] = {}
         for name in plugins[plugType]:
             if Config.Get("Plugins.%s.%s.status" % (plugType, name), "enabled") == "disabled":
+
                 Util.Log(5, "Plugin Disabled:%s" % (name))
                 continue # cofigured as disabled? skip it
             module = plugins[plugType][name]['plugin']
