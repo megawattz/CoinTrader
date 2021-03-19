@@ -22,7 +22,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
 
 RUN pip3 install \
     etherscan \
-    pythonql \
     youtube_transcript_api \
     schedule \
     twilio \
