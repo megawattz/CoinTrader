@@ -57,7 +57,10 @@ means "buy one Bitcoin at market price when the trigger executes (price drop of 
     
 This project put on hold because the foreign exchanges blocked Americans
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 
 >>>>>>> 7cd889f (WIP)
+=======
+>>>>>>> 4449ac7 (Initial commit)
