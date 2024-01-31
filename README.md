@@ -44,7 +44,7 @@ Plugins
 All the objects of those types are kept in those dictionaries. Like all UserInterfaces are kept in the
 Plugins['UserInterface'] dictionary. When a command is issued to the UI from one of the user interfaces, the response is
 broadcast to all of them. This lets you have multiple copies of the program open but still be talking to the same
-world. If an exchange commnand is issued like "Buy Bitcoin" an exchange, or exchanges are specified and the command will
+world. If an exchange command is issued like "Buy Bitcoin" an exchange, or exchanges are specified and the command will
 go do all the the exchanges. This way for example, you can set a very low limit order, to watch for flash crashes, on
 every exchange and a list of coins, with just one command:
 
@@ -55,4 +55,4 @@ would watch all those exchanges in realtime looking for a crash of the coin by 5
 means "buy one Bitcoin at market price when the trigger executes (price drop of 50%)). ETH/USDT:10000 means "spend
 100000 USDT on ETH" when or if the trigger executes.
     
-This project put on hold because the foreign exchanges blocked Americans
+This project put on hold because the foreign exchanges blocked Americans due to the Financial Iron Curtain the U.S. has imposed on itself.
