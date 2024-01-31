@@ -57,7 +57,7 @@ means "buy one Bitcoin at market price when the trigger executes (price drop of 
 
 User Interface
 
-The above structure does not prevent a windowed interface, in fact it helps because any type of user interface can be put on top of the basic language of the commands. A purely browser driven interface can be added, a Windows API, Qt or Electron interface and also be added with little attention required for the back end, which is already taken care of by this code. All of those interfaces can be running concurrently and even across a network or internet, talking to the same back end. This can be used to keep a team of traders in sync because all the trades, but all of the traders will affect every instance of the User Interface, no accidental duplication of orders.
+The above structure does not prevent a windowed interface, in fact it helps because any type of user interface can be put on top of the basic language of the commands. A purely browser driven interface can be added. A Windows API, Qt or Electron interface could also be added with little attention required for the back end, which is already taken care of by this code. All of those interfaces can be running concurrently and even across a network or internet, talking to the same back end. This can be used to keep a team of traders in sync because all of the traders will affect every instance of the User Interface, no accidental duplication of orders.
 
 Future
     
