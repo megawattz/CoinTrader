@@ -54,5 +54,11 @@ meaning On all those exchanges, watch those coins, for a price drop of %50. Make
 would watch all those exchanges in realtime looking for a crash of the coin by 50% and trigger a purchase. BTC:1/USDT
 means "buy one Bitcoin at market price when the trigger executes (price drop of 50%)). ETH/USDT:10000 means "spend
 100000 USDT on ETH" when or if the trigger executes.
+
+User Interface
+
+The above structure does not prevent a windowed interface, in fact it helps because any type of user interface can be put on top of the basic language of the commands. A purely browser driven interface can be added, a Windows API, Qt or Electron interface and also be added with little attention required for the back end, which is already taken care of by this code. All of those interfaces can be running concurrently and even across a network or internet, talking to the same back end. This can be used to keep a team of traders in sync because all the trades, but all of the traders will affect every instance of the User Interface, no accidental duplication of orders.
+
+Future
     
 This project put on hold because the foreign exchanges blocked Americans due to the Financial Iron Curtain the U.S. has imposed on itself.
